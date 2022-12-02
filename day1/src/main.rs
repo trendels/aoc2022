@@ -5,7 +5,7 @@ fn main() {
     let chunks = content.split("\n\n").collect::<Vec<&str>>();
 
     let max = chunks.iter().map(
-        |c| c.trim().split("\n").map(
+        |c| c.trim().split('\n').map(
             |s| s.parse::<i32>().unwrap()
         ).sum::<i32>()
     ).max().unwrap();
@@ -13,7 +13,7 @@ fn main() {
     println!("part1: {}", max);
 
     let mut totals = chunks.iter().map(
-        |c| c.trim().split("\n").map(
+        |c| c.trim().split('\n').map(
             |s| s.parse::<i32>().unwrap()
         ).sum::<i32>()
     ).collect::<Vec<i32>>();
