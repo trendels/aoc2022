@@ -44,7 +44,7 @@ fn main() {
         let set3: HashSet<char> = group[2].chars().collect();
         // intersection() does not return a new set, but an iterator over references
         // to set items. So we have to use copied() to get copies of the items
-        // (turn `&str` back into `str`) and construct an intermediate set from that.
+        // (turn `&char` back into `char`) and construct an intermediate set from that.
         let tmp: HashSet<char> = set1.intersection(&set2).copied().collect();
         let badge = set3.intersection(&tmp).next().unwrap();
         score += priority(*badge);
