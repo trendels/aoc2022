@@ -33,6 +33,8 @@ fn main() {
     let mut count = 0;
     for line in input.lines() {
         let (r1, r2) = parse_line(line).unwrap();
+        // Ned Batchelder has written a nice explanation of this:
+        // https://nedbatchelder.com/blog/201310/range_overlap_in_two_compares.html
         if (r1.0 <= r2.1) && (r1.1 >= r2.0) {
             count += 1;
         }
