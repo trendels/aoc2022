@@ -1,8 +1,12 @@
+// I refactored out these functions after solving the puzzle, and tried to write
+// them without using unwrap(). I learned that you can use the `?` early-return
+// operator with Option as well as Result, which is neat.
 fn parse_range(s: &str) -> Option<(u32, u32)> {
-    let (hi, lo) = s.split_once('-')?;
+    let (lo, hi) = s.split_once('-')?;
     let range = (
-        hi.parse::<u32>().ok()?,
+        // Use ok() to convert from Result (from parse()) to Option (returned by this function).
         lo.parse::<u32>().ok()?,
+        hi.parse::<u32>().ok()?,
     );
     Some(range)
 }
