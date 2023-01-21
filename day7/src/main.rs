@@ -117,8 +117,12 @@ fn build_tree(lines: Vec<Line>) -> Tree {
                     size: 0,
                     children: RefCell::new(vec![]),
                 });
+                // TODO Why does this work only in exactly this order (push, then insert)?
+                // Doing insert then push complains about tree.lookup being borrowed twice, why?
+                //tree.lookup.insert(path, Rc::clone(&node));
                 parent.children.borrow_mut().push(Rc::clone(&node));
-                tree.lookup.insert(path, Rc::clone(&node));
+                // TODO why does this work without Rc::clone()?
+                tree.lookup.insert(path, node);
             }
             Line::Entry(Entry::File(_, size)) => {
                 let parent = tree.lookup.get_mut(cwd.as_str()).unwrap();
@@ -135,9 +139,10 @@ fn build_tree(lines: Vec<Line>) -> Tree {
 
 fn get_size(node: &Rc<Node>) -> u64 {
     let mut total = 0;
+    // This is how you iterate over a RefCell<Vec<...>>
     for child in node.children.borrow().iter() {
         total += child.size;
-        total += get_size(&Rc::clone(child));
+        total += get_size(&child);
     }
     total
 }
