@@ -1,3 +1,24 @@
+// This problem took way longer than all of the previous ones, because I had to learn so much about
+// the rust borrow checker. Getting the tree data structure right was surprisingly complicated.
+//
+// Here is what I learned:
+//
+// - You can't have a tree where the nodes have children as well as a reference back to the parent.
+// - One of the ways to work around this is to store references to the nodes in an external data
+//   structure, like a HashMap.
+// - You need `Rc` (reference counted pointers) if you want to store data in more than one
+//   place (e.g. nodes are stored in the tree as well as in the hash map).
+// - You can not get a value "out" of an `Rc`!
+// - `Rc`s are always immutable. If you want to mutate the wrapped object you need `RefCell`.
+// - `RefCell` allows to mutate an object even while immutable references exist. Wrapping an
+//   object in a `RefCell` means the ownership rules are checked at runtime instead of at compile
+//   time: Violating them will cause a runtime error.
+//
+// There are still some uses of `unwrap()` in functions other than `main`, which I'd like to avoid.
+//
+// I had to convert between `&str` and `String` a lot (`.as_str()`, `.to_string()`). I wonder if
+// there is a better way to do this.
+
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -92,8 +113,6 @@ fn build_tree(lines: Vec<Line>) -> Tree {
                 name => cwd = format!("{cwd}/{name}"),
             },
             Line::Entry(Entry::Dir(name)) => {
-                // We have to clone this when we try to insert it into
-                // multiple data structures to create copies.
                 let path = format!("{cwd}/{name}");
                 let parent = tree.lookup.get_mut(cwd.as_str()).unwrap();
                 let node = Rc::new(Node {
