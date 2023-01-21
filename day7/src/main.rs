@@ -142,7 +142,7 @@ fn get_size(node: &Rc<Node>) -> u64 {
     // This is how you iterate over a RefCell<Vec<...>>
     for child in node.children.borrow().iter() {
         total += child.size;
-        total += get_size(&child);
+        total += get_size(child);
     }
     total
 }
