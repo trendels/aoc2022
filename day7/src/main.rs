@@ -58,8 +58,7 @@ fn read_input(input: &str) -> Option<Vec<Line>> {
 fn parse_command(line: &str) -> Option<Command> {
     if line.starts_with("ls") {
         Some(Command::Ls)
-    } else if line.starts_with("cd") {
-        let name = line.split_once(' ')?.1;
+    } else if let Some(name) = line.strip_prefix("cd ") {
         Some(Command::Cd(name.to_string()))
     } else {
         None
@@ -67,8 +66,7 @@ fn parse_command(line: &str) -> Option<Command> {
 }
 
 fn parse_entry(line: &str) -> Option<Entry> {
-    if line.starts_with("dir ") {
-        let name = line.split_once(' ')?.1;
+    if let Some(name) = line.strip_prefix("dir ") {
         Some(Entry::Dir(name.to_string()))
     } else {
         let (size, name) = line.split_once(' ')?;
