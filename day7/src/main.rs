@@ -118,7 +118,7 @@ fn build_tree(lines: Vec<Line>) -> Tree {
                     children: RefCell::new(vec![]),
                 });
                 parent.children.borrow_mut().push(Rc::clone(&node));
-                tree.lookup.insert(path.clone(), Rc::clone(&node));
+                tree.lookup.insert(path, Rc::clone(&node));
             }
             Line::Entry(Entry::File(_, size)) => {
                 let parent = tree.lookup.get_mut(cwd.as_str()).unwrap();
