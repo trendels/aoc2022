@@ -3,7 +3,6 @@
 use std::cmp::Reverse;
 use std::collections::BinaryHeap;
 use std::collections::HashMap;
-use std::fmt;
 
 type Point = (usize, usize);
 
@@ -39,19 +38,6 @@ impl Map {
 
     fn get_value(&self, p: Point) -> char {
         self.tiles[p.1][p.0]
-    }
-}
-
-impl fmt::Display for Map {
-    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
-        let mut s = String::new();
-        for row in &self.tiles {
-            for tile in row {
-                s.push(*tile);
-            }
-            s.push('\n');
-        }
-        write!(f, "{}", s)
     }
 }
 
