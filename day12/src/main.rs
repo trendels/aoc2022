@@ -19,6 +19,8 @@ struct Map {
 impl Map {
     fn get_neighbours(&self, p: Point) -> Vec<(Point, char)> {
         let mut result = vec![];
+        // Lots of conversions needed here between `usize` (for indexing into a vec)
+        // and i32 (for calculations with possibly negative results).
         let width: i32 = self.width.try_into().unwrap();
         let height: i32 = self.height.try_into().unwrap();
         let x: i32 = p.0.try_into().unwrap();
@@ -64,6 +66,8 @@ fn find_shortest_path(
     let mut queue = BinaryHeap::new();
     let mut value;
     dist.insert(start, 0);
+    // BinaryHeap is a max-heap. We we want a min-heap. Wrapping all items in Reverse reverses the
+    // sort order.
     queue.push(Reverse((0, start)));
 
     fn build_path(prev: &HashMap<Point, Point>, node: Point) -> Vec<Point> {
@@ -89,7 +93,8 @@ fn find_shortest_path(
         for (next, next_value) in map.get_neighbours(node) {
             // Flipped the condition around for the part two,
             // where we need to search in the opposite direction
-            // (which also works for part 1)
+            // (which also works for part 1).
+            // `as i32` used here because of lazyness.
             if (value as i32 - next_value as i32) <= 1 {
                 let alt = d + 1;
                 if alt < *dist.get(&next).unwrap_or(&i32::MAX) {
