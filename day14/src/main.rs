@@ -2,12 +2,21 @@ use std::cmp::{max, min};
 use std::collections::HashMap;
 use std::str::FromStr;
 
+// We derive Eq and PartialEq to be able to compare points with '=='.
+// We derive Clone and Copy to make the Point type "Copy". That means
+// it behaves like for example an integer, which is copied when
+// assigned to a variable or passed as a function argument,
+// instead of moved. This makes working with points much easier.
 #[derive(Debug, PartialEq, Eq, Clone, Copy)]
 struct Point {
     x: u32,
     y: u32,
 }
 
+// Instead of a standalone parse_point function, it is more idiomatic to
+// implement the FromStr trait for our type.
+// We can use this later as Point::from("some string").
+// See https://doc.rust-lang.org/std/str/trait.FromStr.html#examples
 impl FromStr for Point {
     type Err = String;
 
