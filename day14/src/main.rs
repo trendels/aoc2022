@@ -68,6 +68,9 @@ impl Map {
 
     fn simulate_sand_part2(&mut self) -> Option<Point> {
         let mut p: Point = self.source;
+        if self.cells.contains_key(&(p.x, p.y)) {
+            return None;
+        }
         while p.y < self.max_y + 1 {
             if !self.move_grain(&mut p) {
                 self.cells.insert((p.x, p.y), 'o');
@@ -122,11 +125,8 @@ fn main() {
 
     let mut map = read_input(input).unwrap();
     let mut result = 0;
-    while let Some(point) = map.simulate_sand_part2() {
+    while map.simulate_sand_part2().is_some() {
         result += 1;
-        if point == map.source {
-            break;
-        }
     }
     println!("part 2: {result}");
 }
